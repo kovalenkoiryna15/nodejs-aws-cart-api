@@ -12,12 +12,12 @@ export class CartService {
     return this.userCarts[ userId ];
   }
 
-  createByUserId(userId: string) {
+  createByUserId(userId: string): Cart {
     const id = v4();
     const userCart = {
       id,
       items: [],
-    };
+    } as Cart;
 
     this.userCarts[ userId ] = userCart;
 
