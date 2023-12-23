@@ -20,8 +20,14 @@ export class CartServiceStack extends cdk.Stack {
         entry: join(__dirname, "./lambda/cart-handler.ts"),
         handler: "cartHandler",
         environment: {
-          NODE_ENV: 'production'
+          NODE_ENV: 'production',
+          DB_HOST: process.env.DB_HOST!,
+          DB_PORT: process.env.DB_PORT!,
+          DB_USERNAME: process.env.DB_USERNAME!,
+          DB_PASSWORD: process.env.DB_PASSWORD!,
+          DB_NAME: process.env.DB_NAME!,
         },
+        timeout: cdk.Duration.seconds(20)
       }
     );
 
@@ -50,5 +56,9 @@ export class CartServiceStack extends cdk.Stack {
 
     const checkout = cart.addResource("checkout");
     checkout.addMethod(lambda.HttpMethod.POST);
+
+    const order = restApi.root.addResource("order");
+    order.addMethod(lambda.HttpMethod.GET);
+    order.addMethod(lambda.HttpMethod.PUT);
   }
 }

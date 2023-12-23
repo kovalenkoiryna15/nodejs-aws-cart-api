@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import { AppModule } from './app.module';
 import serverlessExpress from '@vendia/serverless-express';
 import { Handler } from 'aws-lambda';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const port = process.env.PORT || 4000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -17,6 +18,13 @@ if (dev) {
       origin: (req, callback) => callback(null, true),
     });
     app.use(helmet());
+
+    const config = new DocumentBuilder()
+      .setTitle('Cloud Database')
+      .setVersion('1.0')
+      .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('swagger', app, document);
   
     await app.listen(port);
   }

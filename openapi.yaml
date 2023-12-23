@@ -1,0 +1,359 @@
+openapi: 3.0.3
+info:
+  title: RDS Shop API
+  version: 1.0.0
+servers: 
+  - url: https://3nc3bgubn8.execute-api.eu-west-1.amazonaws.com/prod/
+paths:
+  /ping:
+    get:
+      tags:
+        - Api
+      summary: Health Check
+      operationId: healthCheck
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/profile/cart:
+    get:
+      security:
+        - basicAuth: []
+      tags:
+        - Cart
+      summary: Find User Cart
+      operationId: findUserCart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      security:
+        - basicAuth: []
+      tags:
+        - Cart
+      summary: Update User Cart
+      operationId: updateUserCart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      security:
+        - basicAuth: []
+      tags:
+        - Cart
+      summary: Clear User Cart
+      operationId: clearUserCart
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/profile/cart/checkout:
+    post:
+      security:
+        - basicAuth: []
+      tags:
+        - Cart
+      summary: Checkout
+      operationId: checkout
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/profile:
+    get:
+      security:
+        - basicAuth: []
+      tags:
+        - Profile
+      summary: Get Profile Info
+      operationId: getProfile
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /order:
+    get:
+      security:
+        - basicAuth: []
+      tags:
+        - Order
+      summary: Get All Orders
+      operationId: getAllOrders
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      security:
+        - basicAuth: []
+      tags:
+        - Order
+      summary: Submit Order
+      operationId: submitOrder
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /order/{order_id}:
+    get:
+      security:
+        - basicAuth: []
+      tags:
+        - Order
+      summary: Find Order
+      operationId: findOrder
+      parameters:
+        - name: order_id
+          in: path
+          description: order id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      security:
+        - basicAuth: []
+      tags:
+        - Order
+      summary: Delete Order
+      operationId: deleteOrder
+      parameters:
+        - name: order_id
+          in: path
+          description: order id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /order/{order_id}/status:
+    put:
+      security:
+        - basicAuth: []
+      tags:
+        - Order
+      summary: Update Order Status
+      operationId: updateOrderStatus
+      parameters:
+        - name: order_id
+          in: path
+          description: order id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '500':
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    Cart:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+        status:
+          type: string
+          example: OPEN
+        updated_at:
+          type: string
+          example: 2023-12-22
+        created_at:
+          type: string
+          example: 2023-12-22
+        user_id:
+          type: string
+          example: 81f5a047-5db3-4649-a3a1-cfb469185e2c
+        id:
+          type: string
+          example: a37de5ea-c8a1-4af6-8bb8-76e1b24ecaa4
+    CartItem:
+      type: object
+      properties:
+        product:
+          type: object
+          properties:
+            id:
+             type: string
+             example: 108eba93-b7bb-4eba-a37f-14c60f6023ef
+            title: 
+             type: string
+             example: Kenya Kiringa Coffee
+            description:
+             type: string
+             example: Like all Kenyan coffees, our Kiringa has a clean, fruity flavour and a subtle sweetness.
+            price:
+             type: number
+             example: 20
+        count:
+          type: number
+          example: 1
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 13ee0cf5-06b9-4396-9da1-61f3aaf36967
+        user_id:
+          type: string
+          example: 81f5a047-5db3-4649-a3a1-cfb469185e2c
+        cart_id:
+          type: string
+          example: a37de5ea-c8a1-4af6-8bb8-76e1b24ecaa4
+        comments:
+          type: string
+        status:
+          type: string
+          example: ORDERED
+        total:
+          type: number
+          example: 20
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+        payment:
+          type: object
+          properties:
+            type:
+             type: string
+            address: 
+             type: string
+            creditCard:
+             type: string
+        delivery:
+          type: object
+          properties:
+            type:
+             type: string
+            address: 
+             type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 277a20e5-5d1b-4d46-ab9a-d40378c015d8
+        name:
+          type: string
+          example: testuser
+        email:
+          type: string
+          example: testuser@gmail.com
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Server Error

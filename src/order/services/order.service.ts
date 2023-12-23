@@ -1,39 +1,51 @@
 import { Injectable } from '@nestjs/common';
 import { v4 } from 'uuid';
 
-import { Order } from '../models';
+import { Order, OrderWithItems } from '../models/order';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Orders } from 'src/db/entities/order.entity';
 
 @Injectable()
 export class OrderService {
-  private orders: Record<string, Order> = {}
+  constructor(
+    @InjectRepository(Orders) private readonly ordersRepo: Repository<Orders>,
+  ) {}
 
-  findById(orderId: string): Order {
-    return this.orders[ orderId ];
+  async getOrders(): Promise<Order[]> {
+    return this.ordersRepo.find();
   }
 
-  create(data: any) {
-    const id = v4()
-    const order = {
-      ...data,
-      id,
-      status: 'inProgress',
-    };
-
-    this.orders[ id ] = order;
-
+  async findOrdersByUserId(userId: string): Promise<Order> {
+    const order = await this.ordersRepo.findOneBy({ user_id: userId });
     return order;
   }
 
-  update(orderId, data) {
-    const order = this.findById(orderId);
+  async findOrdersById(userId: string, orderId: string): Promise<Order> {
+    return this.ordersRepo.findOneBy({ user_id: userId, id: orderId });
+  }
 
-    if (!order) {
-      throw new Error('Order does not exist.');
-    }
+  async updateOrder(order: Order): Promise<Omit<Order, 'id'>> {
+    const { id, ...res }: Order = await this.ordersRepo.save(order);
+    return res;
+  }
 
-    this.orders[ orderId ] = {
+  async deleteOrder(orderId: string): Promise<void> {
+    await this.ordersRepo.delete({ id: orderId });
+  }
+
+  async updateOrderStatus(orderId: string, updated: any): Promise<void> {
+    await this.ordersRepo.save({ id: orderId }, {
+      ...updated,
+    });
+  }
+
+  async create(data: Omit<OrderWithItems, 'id'>): Promise<Omit<Order, 'id'>> {
+    const order: Order = {
+      id: v4(),
       ...data,
-      id: orderId,
-    }
+    };
+
+    return this.updateOrder(order);
   }
 }

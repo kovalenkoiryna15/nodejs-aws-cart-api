@@ -1,4 +1,4 @@
-import { Cart, CartItem } from '../models';
+import { Cart, CartItem } from '../models/cart';
 
 /**
  * @param {Cart} cart

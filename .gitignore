@@ -1,6 +1,8 @@
 # compiled output
 /dist
 /node_modules
+.env
+eu-west-1-bundle.pem
 
 # Logs
 logs
