@@ -3,6 +3,7 @@
 /node_modules
 .env
 eu-west-1-bundle.pem
+openapi.yaml
 
 # Logs
 logs
