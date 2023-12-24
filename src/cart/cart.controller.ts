@@ -93,7 +93,11 @@ export class CartController {
       delivery: { type: 'dhl', address: body.address.address },
       comments: body.address.comment,
       status: OrderStatus.Open,
-      statusHistory: [OrderStatus.Open],
+      statusHistory: [{
+        status: OrderStatus.Open,
+        timestamp: Date.now(),
+        comment: 'Status updated.',
+      }],
       items,
       total,
     });

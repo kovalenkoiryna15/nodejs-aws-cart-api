@@ -63,12 +63,11 @@ export class OrderController {
   @UseGuards(BasicAuthGuard)
   @Put(':id/status')
   async updateOrderStatus(@Req() req: AppRequest, @Param('id') orderId: string, @Body() body) {
-    const order = await this.orderService.updateOrderStatus(orderId, body);
+    await this.orderService.updateOrderStatusHistory(orderId, body);
 
     return {
       statusCode: HttpStatus.OK,
       message: 'OK',
-      data: { order },
     }
   }
 }

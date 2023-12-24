@@ -25,6 +25,12 @@ export type Delivery = {
   address: string,
 };
 
+export type StatusHistory = {
+  status: OrderStatus,
+  timestamp: number,
+  comment: string,
+};
+
 export enum OrderStatus {
   Open = "OPEN",
   Approved = "APPROVED",
@@ -43,7 +49,7 @@ export type Order = {
   comments: string,
   status: OrderStatus,
   total: number;
-  statusHistory: OrderStatus[];
+  statusHistory: StatusHistory[];
 };
 
 export type OrderResponse = Omit<Order, 'payment' | 'delivery' | 'comments'> & {

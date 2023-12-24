@@ -1,4 +1,4 @@
-import { Delivery, OrderStatus, Payment } from "src/order/models/order";
+import { Delivery, OrderStatus, Payment, StatusHistory } from "src/order/models/order";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { CartItem } from "src/cart/models/cart";
 
@@ -23,7 +23,7 @@ export class Orders {
   items: CartItem[];
 
   @Column({ type: 'json', nullable: true })
-  statusHistory: OrderStatus[];
+  statusHistory: StatusHistory[];
 
   @Column({ type: 'text' })
   comments: string;

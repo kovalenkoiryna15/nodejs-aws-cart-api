@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { v4 } from 'uuid';
 
-import { Order, OrderResponse } from '../models/order';
+import { Order, OrderResponse, StatusHistory } from '../models/order';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Orders } from 'src/db/entities/order.entity';
@@ -22,8 +22,9 @@ export class OrderService {
     return this.createOrderResponse(data);
   }
 
-  async findOrdersById(userId: string, orderId: string): Promise<Order> {
-    return this.ordersRepo.findOneBy({ user_id: userId, id: orderId });
+  async findOrdersById(userId: string, orderId: string): Promise<OrderResponse> {
+    const data = await this.ordersRepo.findOneBy({ user_id: userId, id: orderId });
+    return this.createOrderResponse(data);
   }
 
   async updateOrder(order: Order): Promise<OrderResponse> {
@@ -35,9 +36,18 @@ export class OrderService {
     await this.ordersRepo.delete({ id: orderId });
   }
 
-  async updateOrderStatus(orderId: string, updated: any): Promise<void> {
-    await this.ordersRepo.save({ id: orderId }, {
-      ...updated,
+  async updateOrderStatusHistory(orderId: string, newStatus: Omit<StatusHistory, 'timestamp'>): Promise<void> {
+    const order = await this.ordersRepo.findOneBy({ id: orderId });
+    await this.ordersRepo.update({ id: orderId }, {
+      status: newStatus.status,
+      statusHistory: [ 
+        ...order.statusHistory, 
+        { 
+          status: newStatus.status, 
+          timestamp: Date.now(),
+          comment: newStatus.comment,
+        }, 
+      ],
     });
   }
 
