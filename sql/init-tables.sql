@@ -25,15 +25,16 @@ create table cart_items (
 );
 
 DROP TYPE IF EXISTS order_statuses;
-CREATE TYPE order_statuses AS ENUM ('OPEN', 'APPROVED', 'CONFIRMED', 'SENT', 'COMPLETED', 'CANCELLED', 'ORDERED');
+CREATE TYPE order_statuses AS ENUM ('OPEN', 'APPROVED', 'CONFIRMED', 'SENT', 'COMPLETED', 'CANCELLED');
 
 create table orders (
     id uuid unique not null default uuid_generate_v4() primary key,
     user_id uuid not null,
     cart_id uuid not null references carts(id),
-    payment text,
-    delivery text,
+    payment json,
+    delivery json,
     items json,
+    status_history json,
     comments text,
     status order_statuses,
     total integer

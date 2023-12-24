@@ -52,12 +52,11 @@ export class OrderController {
   @UseGuards(BasicAuthGuard)
   @Delete(':id')
   async deleteOrder(@Req() req: AppRequest, @Param('id') orderId: string) {
-    const order = await this.orderService.deleteOrder(orderId);
+    await this.orderService.deleteOrder(orderId);
 
     return {
       statusCode: HttpStatus.OK,
       message: 'OK',
-      data: { order },
     }
   }
 

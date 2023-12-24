@@ -84,7 +84,7 @@ export class CartService {
     }
   }
 
-  async updateCartUserId(userId: string, cartItem: CartItem): Promise<Cart> {
+  async updateCartItemsByUserId(userId: string, cartItem: CartItem): Promise<Cart> {
     const cart = await this.findOrCreateCartByUserId(userId);
 
     if (cartItem.count > 0) {
@@ -100,6 +100,14 @@ export class CartService {
     }
   
     return this.findByUserId(userId);
+  }
+
+  async updateCartByUserId(userId: string, status: CartStatuses): Promise<Cart> {
+    const cart = await this.findOrCreateCartByUserId(userId);
+
+    await this.cartRepo.update({ id: cart.id }, { status });
+
+    return { ...cart, status };
   }
 
   async removeByUserId(userId): Promise<void> {

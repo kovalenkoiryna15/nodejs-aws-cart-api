@@ -16,12 +16,23 @@ export type Payment = {
   type: string,
   address?: string,
   creditCard?: string,
+  firstName: string;
+  lastName: string;
 };
 
 export type Delivery = {
   type: string,
   address: string,
 };
+
+export enum OrderStatus {
+  Open = "OPEN",
+  Approved = "APPROVED",
+  Confirmed = "CONFIRMED",
+  Sent = "SENT",
+  Completed = "COMPLETED",
+  Cancelled = "CANCELLED",
+}
 
 export type Order = {
   id?: string,
@@ -30,10 +41,12 @@ export type Order = {
   payment: Payment,
   delivery: Delivery,
   comments: string,
-  status: string,
+  status: OrderStatus,
   total: number;
+  statusHistory: OrderStatus[];
 };
 
-export type OrderWithItems = Omit<Order, 'id'> & {
+export type OrderResponse = Omit<Order, 'payment' | 'delivery' | 'comments'> & {
   items: CartItem[],
+  address: Address;
 };

@@ -1,4 +1,4 @@
-import { Delivery, Payment } from "src/order/models/order";
+import { Delivery, OrderStatus, Payment } from "src/order/models/order";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { CartItem } from "src/cart/models/cart";
 
@@ -22,11 +22,14 @@ export class Orders {
   @Column({ type: 'json', nullable: true })
   items: CartItem[];
 
+  @Column({ type: 'json', nullable: true })
+  statusHistory: OrderStatus[];
+
   @Column({ type: 'text' })
   comments: string;
 
-  @Column({ type: 'enum', enum: ['OPEN', 'APPROVED', 'CONFIRMED', 'SENT', 'COMPLETED', 'CANCELLED', 'ORDERED'], nullable: false })
-  status: string;
+  @Column({ type: 'enum', enum: Object.values(OrderStatus), nullable: false })
+  status: OrderStatus;
 
   @Column({ type: 'integer' })
   total: number;
