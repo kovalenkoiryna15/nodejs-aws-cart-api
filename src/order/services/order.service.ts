@@ -5,6 +5,8 @@ import { Order, OrderResponse, StatusHistory } from '../models/order';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Orders } from 'src/db/entities/order.entity';
+import { Carts } from 'src/db/entities/cart.entity';
+import { CartStatuses } from 'src/cart/models/cart';
 
 @Injectable()
 export class OrderService {
@@ -52,12 +54,35 @@ export class OrderService {
   }
 
   async create(data: Omit<Orders, 'id'>): Promise<OrderResponse> {
-    const order: Order = {
-      id: v4(),
-      ...data,
-    };
+    const id = v4();
+    const queryRunner = 
+      this.ordersRepo.manager.connection.createQueryRunner(); 
 
-    return this.updateOrder(order);
+    await queryRunner.connect(); 
+    await queryRunner.startTransaction(); 
+
+    try {
+      const order = await queryRunner.manager.save(Orders, {...data, id}); 
+      await queryRunner.manager.update(Carts, order.cart_id, { 
+        status: CartStatuses.ORDERED,
+      });
+
+      await queryRunner.commitTransaction(); 
+
+      return this.createOrderResponse({...data, id});
+    } catch(err) {
+      await queryRunner.rollbackTransaction(); 
+      return null; 
+    } finally {
+      await queryRunner.release(); 
+    }
+
+    // const order: Order = {
+    //   id: v4(),
+    //   ...data,
+    // };
+
+    // return this.updateOrder(order);
   }
 
 
@@ -73,4 +98,5 @@ export class OrderService {
       }
     };
   }
+
 }
