@@ -40,7 +40,7 @@ export class CartService {
       user_id: userId,
       created_at: date,
       updated_at: date,
-      status: CartStatuses.STATUS,
+      status: CartStatuses.OPEN,
       items: [],
     };
 
