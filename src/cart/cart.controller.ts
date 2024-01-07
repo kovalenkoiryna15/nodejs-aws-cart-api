@@ -37,16 +37,25 @@ export class CartController {
   @UseGuards(BasicAuthGuard)
   @Put()
   async updateUserCart(@Req() req: AppRequest, @Body() body) { // TODO: validate body payload...
-    const cart = await this.cartService.updateCartItemsByUserId(getUserIdFromRequest(req), body)
+    const cart = await this.cartService.updateCartItemsByUserId(getUserIdFromRequest(req), body);
+
+    if (cart) {
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'OK',
+        data: {
+          cart,
+          total: calculateCartTotal(cart),
+        }
+      };
+    }
 
     return {
-      statusCode: HttpStatus.OK,
-      message: 'OK',
+      statusCode: HttpStatus.BAD_REQUEST,
       data: {
-        cart,
-        total: calculateCartTotal(cart),
+        error: 'Product from DynamoDB does not exist in RDS.'
       }
-    }
+    };
   }
 
   // @UseGuards(JwtAuthGuard)

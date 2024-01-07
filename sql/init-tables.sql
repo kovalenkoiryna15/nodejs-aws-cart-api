@@ -56,10 +56,10 @@ INSERT INTO carts (id, user_id, created_at, updated_at, status) VALUES
   ('36a181bf-eab9-4906-b01f-f68a779ad4d2', '277a20e5-5d1b-4d46-ab9a-d40378c015d8', '2023-12-21', '2023-12-22', 'OPEN');
   
  INSERT INTO products (id, title, description, price) VALUES 
-  ('740c1845-c0f4-4587-87dd-78be1804f3b1', 'Kenya Kiringa Coffee', 'Like all Kenyan coffees, our Kiringa has a clean, fruity flavour and a subtle sweetness.', 20),
+  ('740c1845-c0f4-4587-87dd-78be1804f3b1', 'Brazylia Santa Clara', 'The seeds come from natural processing, which suggests a high body and a specific dose of sweetness.', 20),
   ('61f30d6b-f1a2-4e8b-8158-d2e4987bf3b1', 'Drip Coffee Blend', 'Drip Coffee Blend is a mix of the highest quality beans from different parts of the world. ', 11),
   ('9670f8fe-ae3e-4286-990b-375a66bc7b95', 'Decaf Colombia Cauca Espresso', 'The beans of this coffee are a carefully selected blend of Arabica beans from the Colombian Cauca region. ', 12),
-  ('bbb02a04-0f70-4075-872f-be580a0d0514', 'Fall Espresso', 'Delicious autumnal flavours and aromas wrapped up in a coffee bag - pleasantly tart red currant reminiscent of summer, juicy pomegranate and lots of sweetness tasting of honey and milk chocolate.', 14),
+  ('bbb02a04-0f70-4075-872f-be580a0d0514', 'Burundi Mikuba', 'Bourbon variety, used from crops from the picturesque Mikuba hill in the Kayanza location.', 14),
   ('0d36c5e2-3bea-4ab3-bfc9-c66142fa0689', 'Ethiopia Yirga Beloya', 'More beans from Ethiopia - another temptation for the senses...', 15),
   ('dce6f5c8-092c-408b-bcbc-fd3c10dd211e', 'Costa Rica Las Lajas', 'Meet our latest filter COSTA RICA coffee from the Las Lajas farm, which comes from a semi-washed process, which is an intermediate method between washed and natural processing.', 16);
   
