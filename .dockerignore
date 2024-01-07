@@ -1,0 +1,29 @@
+# Exclude the directory "node_modules" and its contents
+# Why it was excluded: Dependencies will be installed in VM.
+node_modules/
+
+# Exclude the directory "cart-service" and its contents
+# Why it was excluded: My app does not need aws cdk logic.
+cart-service/
+
+# Exclude the directory "dist" and its contents
+# Why it was excluded: Build will be created in VM.
+dist/
+
+# Exclude the directory "test" and its contents
+# Why it was excluded: I don't have test running stage in pipeline.
+test/
+*.spec.ts
+
+# Exclude files
+# Why they were excluded: M
+.git
+.gitignore
+
+# Exclude the file ".env"
+# Why it was excluded: For security reasons .env file is removed.
+.env
+
+# Exclude all files and directories that end with ".md"
+# Why they were excluded: My app does not need markdown.
+*.md

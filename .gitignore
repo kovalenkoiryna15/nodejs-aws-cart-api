@@ -1,7 +1,7 @@
 # compiled output
 /dist
 /node_modules
-.env
+*.env
 eu-west-1-bundle.pem
 openapi.yaml
 
@@ -39,3 +39,4 @@ lerna-debug.log*
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+.ebextensions/*
