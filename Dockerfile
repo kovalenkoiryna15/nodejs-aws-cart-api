@@ -25,7 +25,6 @@ COPY --from=builder /usr/src/app/dist .
 # Run the application as a non-root user.
 USER node
 
-ENV PORT=4000
 EXPOSE 4000
 
 CMD [ "node", "main.js" ]
